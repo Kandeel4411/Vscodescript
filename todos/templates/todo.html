@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block head%}
+<title> Todos </title>
+{% endblock%}
+{% block body%}
+<h2> Todos </h2>
+<hr>
+<ul>
+    {% for todo in todos %}
+    <li> {{ todo }}</li>
+    {% endfor %}
+</ul>
+{% endblock%}
