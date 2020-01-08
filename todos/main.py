@@ -30,7 +30,7 @@ def get_todos(project):
                     for p in os.listdir(project_dir)
                 ]
             else:
-                return [project, project_todos(project_dir=project_dir / project)]
+                return [(project, project_todos(project_dir=project_dir / project))]
     except FileNotFoundError:
         abort(Response("Config file was not found. Consider using 'vs init' first."))
     except Exception as e:

@@ -178,7 +178,7 @@ def clone(ctx, project):
 ###       Command:  vs todos       ###
 ######################################
 @vs.command(help=click.style("Opens Todos app.", fg="green"))
-@click.option("--project", default="all")
+@click.option("-p", "--project", default="all")
 @click.pass_context
 def todos(ctx, project):
     click.secho("Starting todos...", fg="yellow")
