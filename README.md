@@ -1,6 +1,6 @@
 # ![VS](assets/VS.png)***codescript***
 Personal automation cli app for ease of opening projects/playground workplaces in VScode and various other utilities.
-
+![VS help gif](assets/PNYs35lTDi.gif)
 *Note: Only tested on Windows but should work on other platforms.*
 ## Requirements
 - Python 3.6+
