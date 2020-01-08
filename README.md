@@ -1,5 +1,5 @@
 # ![VS](assets/VS.png)***codescript***
-Personal automation cli app for ease of opening projects/playground workplaces in VScode and various other utilities.
+Personal automation cli app for ease of opening projects/playground workplaces in VScode and various other utilities. All you have to do is Win+R then `vs project somename` and done.  
 *Note: Only tested on Windows but should work on other platforms.*
 
 ## Requirements
