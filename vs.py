@@ -22,7 +22,9 @@ CONFIG_PATH = str(BASE_DIR / pl.Path("config.json"))
 @click.group(
     help=click.style(
         "Clone/Creates project/code folder if it doesn't"
-        " exist and opens it in VScode.",
+        " exist and opens it in VScode."
+        "\n\nTodos app: Parses Markdown formatted list from '.todo' file from project directories"
+        " and displays it on a webpage.",
         fg="yellow",
     ),
 )
@@ -175,12 +177,12 @@ def clone(ctx, project):
 ######################################
 ###       Command:  vs todos       ###
 ######################################
-@vs.command(help=click.style("Opens Todo app.", fg="green"))
+@vs.command(help=click.style("Opens Todos app.", fg="green"))
 @click.option("--project", default="all")
 @click.pass_context
 def todos(ctx, project):
     click.secho("Starting todos...", fg="yellow")
-    flask_app = subprocess.Popen(["python", str(ctx.obj["todos_app"]), project])
+    flask_app = subprocess.Popen(["python", str(ctx.obj["todos_app"]), CONFIG_PATH, project])
     webbrowser.open("http://localhost:5000")
     flask_app.wait()
 

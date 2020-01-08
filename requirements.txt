@@ -1,4 +1,7 @@
+beautifulsoup4==4.8.2
 click==7.0
+colorama==0.4.3
+mistune==0.8.4
 mouseinfo==0.1.2
 pillow==7.0.0; python_version == "3.7" or python_version == "3.8"
 pyautogui==0.9.48
@@ -127,3 +130,4 @@ pyrect==0.1.4
 pyscreeze==0.1.25
 python3-xlib==0.15; platform_system == "Linux" and python_version >= "3.0"
 pytweening==1.0.3
+soupsieve==1.9.5

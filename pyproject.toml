@@ -9,6 +9,9 @@ python = "^3.7"
 click = "^7.0"
 pyperclip = "^1.7.0"
 pyautogui = "^0.9.48"
+mistune = "^0.8.4"
+colorama = "^0.4.3"
+beautifulsoup4 = "^4.8.2"
 
 [tool.poetry.dev-dependencies]
 

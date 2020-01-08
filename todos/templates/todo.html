@@ -6,8 +6,30 @@
 <h2> Todos </h2>
 <hr>
 <ul>
-    {% for todo in todos %}
-    <li> {{ todo }}</li>
+
+    {% for todo, items in todos %}
+    <li>
+        <a href="#" class="project_name"> {{ todo }} </a>
+        <ul>
+            {% for item in items %}
+            <li> {{ item }} </li>
+            {% endfor %}
+        </ul>
+    </li>
     {% endfor %}
 </ul>
+<script>
+    let projects = document.querySelectorAll(".project_name");
+    projects.forEach((project) => project.onclick = func(project.innerHTML));
+
+    function func(project) {
+        function call() {
+            let xml = new XMLHttpRequest();
+            xml.open("GET", `/call/${project}`);
+            xml.send();
+        }
+        return call;
+    }
+</script>
+
 {% endblock%}
