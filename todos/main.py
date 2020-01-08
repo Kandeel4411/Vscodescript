@@ -45,7 +45,7 @@ def project_todos(project_dir):
             todo_html = BeautifulSoup(html_list, "html.parser")
             return [item.get_text() for item in todo_html.find_all("li")]
     except FileNotFoundError:
-        return ["Project doesn't contain .todos file."]
+        return ["Project doesn't contain .todo file."]
     except Exception as e:
         print(e)
         abort(Response(f"An unexpected error occurred."))
