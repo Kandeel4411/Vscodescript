@@ -1,7 +1,7 @@
 # ![VS](assets/VS.png)***codescript***
 Personal automation cli app for ease of opening projects/playground workplaces in VScode and various other utilities.
-![VS help gif](assets/PNYs35lTDi.gif)
 *Note: Only tested on Windows but should work on other platforms.*
+
 ## Requirements
 - Python 3.6+
 
@@ -10,6 +10,8 @@ Personal automation cli app for ease of opening projects/playground workplaces i
 - Add the cloned repo directory to `PATH` Environment variable.
 - Open the cloned repo in the terminal and run `pip install -r requirements.txt`.
 - Run `vs` in terminal if on Windows or `vs.py` otherwise.
+
+![VS help gif](assets/PNYs35lTDi.gif)
 
 ## Personal development
 - [Install Make](http://gnuwin32.sourceforge.net/packages/make.htm) if you're on Windows. OSX already has it installed. Linux will tell you how to install it (i.e., `sudo apt-get install make`)
