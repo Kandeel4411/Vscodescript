@@ -3,14 +3,12 @@ import os
 import sys
 import pathlib as pl
 
-from bs4 import BeautifulSoup
-from flask import Flask, render_template, abort, Response
+from flask import Flask, render_template, abort, Response, Markup
 import mistune
 
 app = Flask(__name__)
 
 CONFIG_PATH, PROJECT_NAME = sys.argv[1:]
-
 
 @app.route("/")
 def todos():
@@ -26,11 +24,13 @@ def get_todos(project):
 
             if project == "all":
                 return [
-                    (p, project_todos(project_dir=project_dir / p))
+                    (p, project_html_todos(project_dir=project_dir / p))
                     for p in os.listdir(project_dir)
                 ]
             else:
-                return [(project, project_todos(project_dir=project_dir / project))]
+                return [
+                    (project, project_html_todos(project_dir=project_dir / project))
+                ]
     except FileNotFoundError:
         abort(Response("Config file was not found. Consider using 'vs init' first."))
     except Exception as e:
@@ -38,14 +38,12 @@ def get_todos(project):
         abort(Response(f"An unexpected error occurred."))
 
 
-def project_todos(project_dir):
+def project_html_todos(project_dir):
     try:
         with pl.Path.open(project_dir / ".todo") as todos:
-            html_list = mistune.markdown(todos.read())
-            todo_html = BeautifulSoup(html_list, "html.parser")
-            return [item.get_text() for item in todo_html.find_all("li")]
+            return Markup(mistune.markdown(todos.read()))
     except FileNotFoundError:
-        return ["Project doesn't contain .todo file."]
+        return Markup("<ul><li>Project doesn't contain .todo file.</li></ul>")
     except Exception as e:
         print(e)
         abort(Response(f"An unexpected error occurred."))

@@ -1,35 +1,49 @@
 {% extends "layout.html" %}
-{% block head%}
-<title> Todos </title>
-{% endblock%}
-{% block body%}
-<h2> Todos </h2>
-<hr>
-<ul>
 
-    {% for todo, items in todos %}
-    <li>
-        <a href="#" class="project_name"> {{ todo }} </a>
-        <ul>
-            {% for item in items %}
-            <li> {{ item }} </li>
+{% block head%}
+    <title> Todos </title>
+{% endblock%}
+
+{% block body%}
+
+    <header>
+        <h2  class="text-center">
+            <img src="{{url_for('static', filename='img/VS.png')}}">
+            Todos
+        </h2>
+        <hr>
+    </header>
+
+    <main>
+        <ul class="list-group list-group-flush">
+            {% for todo, items in todos %}
+            <li class="list-group-item">
+                <a href="#" class="project_name">
+                     {{ todo }}
+                </a>
+                <div class="container card bg-dark text-white border border-primary">
+                    {{items}}
+                </div>
+            </li>
             {% endfor %}
         </ul>
-    </li>
-    {% endfor %}
-</ul>
-<script>
-    let projects = document.querySelectorAll(".project_name");
-    projects.forEach((project) => project.onclick = func(project.innerHTML));
+    </main c>
 
-    function func(project) {
-        function call() {
-            let xml = new XMLHttpRequest();
-            xml.open("GET", `/call/${project}`);
-            xml.send();
-        }
-        return call;
-    }
-</script>
+
+    {% block javascript %}
+        <script>
+            let projects = document.querySelectorAll(".project_name");
+            projects.forEach((project) => project.onclick = func(project.innerHTML));
+
+            function func(project) {
+                function call() {
+                    let xml = new XMLHttpRequest();
+                    xml.open("GET", `/call/${project}`);
+                    xml.send();
+                }
+                return call;
+            }
+        </script>
+    {% endblock%}
 
 {% endblock%}

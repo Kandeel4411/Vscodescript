@@ -23,7 +23,7 @@ CONFIG_PATH = str(BASE_DIR / pl.Path("config.json"))
     help=click.style(
         "Clone/Creates project/code folder if it doesn't"
         " exist and opens it in VScode."
-        "\n\nTodos app: Parses Markdown formatted list from '.todo' file from project directories"
+        "\n\nTodos app: Parses Markdown formatted .todo file from project directories"
         " and displays it on a webpage.",
         fg="yellow",
     ),
