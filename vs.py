@@ -2,7 +2,6 @@
 import json
 import os
 import re
-import random
 import pathlib as pl
 import sys
 import subprocess
@@ -10,7 +9,6 @@ import webbrowser
 
 import click
 import pyperclip
-import pyautogui as gui
 
 ######################################
 ###   Configs & Starting command   ###
@@ -38,7 +36,6 @@ def vs(ctx):
                     "project_dir": pl.Path(config["PROJECT_DIR"]),
                     "code_dir": pl.Path(config["CODE_DIR"]),
                     "clone_dir": pl.Path(config["CLONE_DIR"]),
-                    "screen_dir": pl.Path(config["SCR_DIR"]),
                     "todos_app": BASE_DIR / pl.Path("todos/main.py"),
                 }
         except KeyError:
@@ -72,15 +69,11 @@ def vs(ctx):
 @click.option(
     "--clone_dir", prompt="Enter full clone directory: ", type=str, required=True
 )
-@click.option(
-    "--scr_dir", prompt="Enter full screenshot directory", type=str, required=True
-)
-def init(project_dir, code_dir, clone_dir, scr_dir):
+def init(project_dir, code_dir, clone_dir):
     dirs = {
         "PROJECT_DIR": pl.Path(project_dir),
         "CODE_DIR": pl.Path(code_dir),
         "CLONE_DIR": pl.Path(clone_dir),
-        "SCR_DIR": pl.Path(scr_dir),
     }
     for d in dirs.values():
         if not d.exists():
@@ -136,15 +129,6 @@ def project(ctx, dir_name):
     subprocess.Popen("code .", shell=True)
 
 
-######################################
-###       Command:  vs ramy        ###
-######################################
-@vs.command(help=click.style("Universal decider for all things important.", fg="green"))
-@click.option("--choice", "-c", default=1, type=click.INT)
-@click.pass_context
-def ramy(ctx, choice):
-    click.secho(f"Ramy says: {random.randint(0,choice)}", fg="cyan")
-    click.pause()
 
 
 ######################################
@@ -186,20 +170,6 @@ def todos(ctx, project):
     webbrowser.open("http://localhost:5000")
     flask_app.wait()
 
-
-######################################
-###       Command:  vs screen      ###
-######################################
-@vs.command(
-    help=click.style("Stores screenshot and opens containing folder.", fg="green")
-)
-@click.argument("name", default="vs-temp")
-@click.pass_context
-def screen(ctx, name):
-    os.chdir(ctx.obj["screen_dir"])
-    name += ".png"
-    gui.screenshot(imageFilename=name)
-    subprocess.Popen("explorer.exe .", shell=True)
 
 
 if __name__ == "__main__":
