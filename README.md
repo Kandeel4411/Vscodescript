@@ -4,7 +4,8 @@ Personal automation cli app for ease of opening projects/playground workplaces i
 *Note: Only tested on Windows but should work on other platforms.*
 
 ## Requirements
-- Python 3.6+
+- Python 3.6+.
+- Visual Studio Code installed and in the `PATH` Environment variable.
 
 ## Getting Started
 - Clone the repo or click [here](https://github.com/Kandeel4411/Vscodescript/archive/master.zip) to download the zip file then extract it locally.
