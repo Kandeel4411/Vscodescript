@@ -12,7 +12,7 @@ Personal automation cli app for ease of opening projects/playground workplaces i
 - Open the cloned repo in the terminal and run `pip install -r requirements.txt`.
 - Run `vs` in terminal if on Windows or `vs.py` otherwise.
 
-![VS help gif](assets/PNYs35lTDi.gif)
+![VS help gif](assets/8dQVVthINK.gif)
 
 ## Personal development
 - [Install Make](http://gnuwin32.sourceforge.net/packages/make.htm) if you're on Windows. OSX already has it installed. Linux will tell you how to install it (i.e., `sudo apt-get install make`)
