@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import json
-import os
 import re
 import pathlib as pl
 import sys
@@ -13,7 +12,7 @@ import pyperclip
 ######################################
 ###   Configs & Starting command   ###
 ######################################
-BASE_DIR = pl.Path(os.path.abspath(__file__)).parent
+BASE_DIR = pl.Path(__file__).parent
 CONFIG_PATH = str(BASE_DIR / pl.Path("config.json"))
 
 
@@ -108,8 +107,7 @@ def code(ctx, dir_name):
     if not pl.Path.exists(path):
         pl.Path.mkdir(path)
 
-    os.chdir(path)
-    subprocess.Popen("code .", shell=True)
+    subprocess.Popen("code .", shell=True, cwd=path)
 
 
 ######################################
@@ -125,8 +123,7 @@ def project(ctx, dir_name):
     if not pl.Path.exists(path):
         pl.Path.mkdir(path)
 
-    os.chdir(path)
-    subprocess.Popen("code .", shell=True)
+    subprocess.Popen("code .", shell=True, cwd=path)
 
 
 
@@ -150,12 +147,10 @@ def clone(ctx, project):
         sys.exit()
 
     if not pl.Path.exists(path):
-        os.chdir(clone_dir)
-        cloning = subprocess.Popen(f"git clone {repo}")
+        cloning = subprocess.Popen(f"git clone {repo}", cwd=clone_dir)
         cloning.wait()
 
-    os.chdir(path)
-    subprocess.Popen("code .", shell=True)
+    subprocess.Popen("code .", shell=True, cwd=path)
 
 
 ######################################
