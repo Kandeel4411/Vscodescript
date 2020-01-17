@@ -9,13 +9,14 @@ import webbrowser
 import click
 import pyperclip
 
-######################################
-###   Configs & Starting command   ###
-######################################
+
 BASE_DIR = pl.Path(__file__).parent
 CONFIG_PATH = str(BASE_DIR / pl.Path("config.json"))
 
 
+######################################
+###        Starting command        ###
+######################################
 @click.group(
     help=click.style(
         "Clone/Creates project/code folder if it doesn't"
@@ -28,6 +29,8 @@ CONFIG_PATH = str(BASE_DIR / pl.Path("config.json"))
 @click.pass_context
 def vs(ctx):
     if ctx.invoked_subcommand and ctx.invoked_subcommand != "init":
+
+        # Loading initial json configuration
         try:
             with open(CONFIG_PATH) as js:
                 config = json.load(js)
@@ -37,22 +40,35 @@ def vs(ctx):
                     "clone_dir": pl.Path(config["CLONE_DIR"]),
                     "todos_app": BASE_DIR / pl.Path("todos/main.py"),
                 }
+
+        # Wasn't able to find config file
+        except FileNotFoundError:
+            click.secho("Configuration file was not found.", fg="red")
+            click.secho("Tip: consider using 'vs init' first to setup configuration.", fg="yellow")
+            sys.exit(1)
+
+        # Directory configuration was missing
         except KeyError:
             click.secho("Error: directory paths were not initialized.", fg="red")
             click.secho("Tip: consider using 'vs init' first.", fg="yellow")
-            sys.exit()
+            sys.exit(1)
+
+        # For possible json error and other cases
         except Exception as e:
-            click.secho(f"{e}", fg="red")
-            sys.exit()
+            click.secho(f"{e}.", fg="red")
+            click.secho("Tip: consider using 'vs init' first as configuration may not have been initialized.", fg="yellow")
+            sys.exit(1)
+
+        # Checking if config directories actually exist
         else:
             for path in ctx.obj.values():
                 if not path.exists():
                     click.secho("Error: invalid directory paths were given.", fg="red")
                     click.secho(
-                        "Tip: consider using 'vs init' first and adding valid directory paths",
+                        "Tip: consider using 'vs init' first and adding valid directory paths.",
                         fg="yellow",
                     )
-                    sys.exit()
+                    sys.exit(1)
 
 
 #######################################
@@ -69,62 +85,45 @@ def vs(ctx):
     "--clone_dir", prompt="Enter full clone directory: ", type=str, required=True
 )
 def init(project_dir, code_dir, clone_dir):
-    dirs = {
-        "PROJECT_DIR": pl.Path(project_dir),
-        "CODE_DIR": pl.Path(code_dir),
-        "CLONE_DIR": pl.Path(clone_dir),
+    directories = {
+        "PROJECT_DIR": project_dir,
+        "CODE_DIR": code_dir,
+        "CLONE_DIR": clone_dir,
     }
-    for d in dirs.values():
-        if not d.exists():
-            click.secho("Error: invalid directory paths were given.", fg="red")
-            click.secho(
-                "Tip: consider using 'vs init' and adding valid directory paths",
-                fg="yellow",
-            )
-            return
 
-    config = {}
-    for dir, value in dirs.items():
-        config[dir] = str(value)
+    # Creating json config file
     try:
         with open(CONFIG_PATH, "w") as js:
-            json.dump(config, js, indent=4)
+            json.dump(directories, js, indent=4)
     except Exception as e:
         click.secho(f"{e}", fg="red")
         sys.exit()
 
 
-######################################
-###       Command:  vs code        ###
-######################################
+###########################################
+###   Command:  vs code & vs project    ###
+###########################################
+@click.pass_context
+def open_vscode(ctx, dir_name, directory):
+    click.secho("Opening...", fg="yellow")
+
+    path = ctx.obj[directory] / dir_name
+    pl.Path.mkdir(path, exist_ok=True)
+
+    subprocess.Popen("code .", shell=True, cwd=path)
+
+#! TODO: Look for a better way to handle using the same command with different names
+#! to do this without over complicating things and reptitiveness
 @vs.command(help=click.style("Opens given playground directory.", fg="green"))
 @click.argument("dir_name")
-@click.pass_context
-def code(ctx, dir_name):
-    click.secho("Opening...", fg="yellow")
-
-    path = ctx.obj["code_dir"] / dir_name
-    if not pl.Path.exists(path):
-        pl.Path.mkdir(path)
-
-    subprocess.Popen("code .", shell=True, cwd=path)
+def code(dir_name):
+    open_vscode(directory="code_dir", dir_name=dir_name)
 
 
-######################################
-###     Command:  vs project       ###
-######################################
 @vs.command(help=click.style("Opens given project directory.", fg="green"))
 @click.argument("dir_name")
-@click.pass_context
-def project(ctx, dir_name):
-    click.secho("Opening...", fg="yellow")
-
-    path = ctx.obj["project_dir"] / dir_name
-    if not pl.Path.exists(path):
-        pl.Path.mkdir(path)
-
-    subprocess.Popen("code .", shell=True, cwd=path)
-
+def project(dir_name):
+    open_vscode(directory="project_dir", dir_name=dir_name)
 
 
 
@@ -137,16 +136,27 @@ def project(ctx, dir_name):
 def clone(ctx, project):
     click.secho("Cloning...", fg="yellow")
 
+    # Setting directory to be cloned in projects directory if true
     clone_dir = ctx.obj["project_dir"] if project else ctx.obj["clone_dir"]
+
+    #! TODO: Implement a better pattern for matching git repo links
     pattern = re.compile(r"/[^/]+\.git$")
     repo = pyperclip.paste()
+
     try:
+        # Setting the directory name to be the same repo name (before the '.git')
         path = clone_dir / pl.Path(re.search(pattern, repo).group()[1:-4])
+
+    # Valid repo pattern failed to match
     except AttributeError:
         click.secho("Invalid git repo.", fg="red")
         sys.exit()
 
-    if not pl.Path.exists(path):
+    # Checking if it wasn't already cloned before
+    if  pl.Path.exists(path):
+        click.secho("Directory with the same name already exists.")
+        click.secho("Opening...", fg="yellow")
+    else:
         cloning = subprocess.Popen(f"git clone {repo}", cwd=clone_dir)
         cloning.wait()
 
@@ -160,8 +170,12 @@ def clone(ctx, project):
 @click.option("-p", "--project", default="all")
 @click.pass_context
 def todos(ctx, project):
-    click.secho("Starting todos...", fg="yellow")
+    click.secho("Starting Todos...", fg="yellow")
+    click.secho("Press CTRL+C to exit the application.", fg="red")
+
+    # Running todos flask application with the path to configuration and optional specific project
     flask_app = subprocess.Popen(["python", str(ctx.obj["todos_app"]), CONFIG_PATH, project])
+
     webbrowser.open("http://localhost:5000")
     flask_app.wait()
 
