@@ -122,8 +122,10 @@ def code(dir_name):
 
 @vs.command(help=click.style("Opens given project directory.", fg="green"))
 @click.argument("dir_name")
-def project(dir_name):
-    open_vscode(directory="project_dir", dir_name=dir_name)
+@click.option("--clone", is_flag=True, default=False)
+def project(dir_name, clone):
+    directory = "project_dir" if not clone else "clone_dir"
+    open_vscode(directory=directory, dir_name=dir_name)
 
 
 
