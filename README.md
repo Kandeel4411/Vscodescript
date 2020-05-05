@@ -1,5 +1,4 @@
 # ![VS](assets/VS.png)***codescript***
-[![Generic badge](https://img.shields.io/badge/Build-Passing-<COLOR>.svg)](https://shields.io/)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Kandeel4411/Vscodescript/blob/master/LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Kandeel4411/Vscodescript/pulse)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
@@ -10,14 +9,18 @@ Personal automation cli app for ease of opening projects/playground workplaces i
 
 ## Requirements
 - Python 3.6+.
-- Visual Studio Code installed and in the `PATH` Environment variable.
+- Visual Studio Code installed.  
+Note: both Python & Visual Studio Code must be included in the `PATH` Environment variable.
 
 ## Getting Started
 - Clone the repo or click [here](https://github.com/Kandeel4411/Vscodescript/archive/master.zip) to download the zip file then extract it locally.
 - Add the cloned repo directory to `PATH` Environment variable.
 - Open the cloned repo in the terminal and run `pip install -r requirements.txt`.
-- Run `vs` in terminal if on Windows or `vs.py` otherwise.
-
+- Run `vs` in terminal if on Windows or `vs.py` otherwise.  
+*Note: If `vs.py` doesn't work, you may need to change the shebang/first line in `vs.py` into:*
+  ```
+  #! /usr/bin/env python3
+  ```
 ![VS help gif](assets/8dQVVthINK.gif)
 
 ## Personal development
