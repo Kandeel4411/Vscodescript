@@ -8,7 +8,7 @@ authors = ["Abdelrahman Kandil <abdelrahmankandil@hotmail.com>"]
 python = "^3.7"
 click = "^7.0"
 pyperclip = "^1.7.0"
-mistune = "^0.8.4"
+mistune = "^2.0.3"
 colorama = "^0.4.3"
 flask = "^1.1.1"
 
